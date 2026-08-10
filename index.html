@@ -3,79 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soporte de la App</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Soporte Family Link</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #F5F5FA; color: #2D2A6E; }
+        header { background: linear-gradient(135deg, #534AB7, #7B72D4); color: white; padding: 40px 24px 60px; text-align: center; }
+        header h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+        header p { font-size: 14px; opacity: 0.85; }
+        .header-icon { width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px; }
+
+        .lang-selector { display: flex; justify-content: center; gap: 8px; margin: 16px 0 0; flex-wrap: wrap; }
+        .lang-btn { background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+        .lang-btn:hover, .lang-btn.active { background: white; color: #534AB7; border-color: white; }
+
+        main { max-width: 720px; margin: -24px auto 40px; padding: 0 16px; }
+        .section-title { font-size: 12px; font-weight: 700; color: #534AB7; text-transform: uppercase; letter-spacing: 1px; margin: 28px 0 12px; }
+        .faq-card { background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(83,74,183,0.08); overflow: hidden; margin-bottom: 8px; }
+        .faq-question { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; cursor: pointer; font-size: 15px; font-weight: 600; color: #2D2A6E; user-select: none; transition: background 0.2s; }
+        .faq-question:hover { background: #F8F7FF; }
+        .faq-question .arrow { width: 20px; height: 20px; color: #534AB7; transition: transform 0.3s; flex-shrink: 0; }
+        .faq-question.open .arrow { transform: rotate(180deg); }
+        .faq-answer { display: none; padding: 0 20px 18px; font-size: 14px; color: #555; line-height: 1.7; border-top: 1px solid #F0EFF8; }
+        .faq-answer img { display: block; max-width: 100%; border-radius: 12px; margin: 12px auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .faq-answer ul { margin: 8px 0 0 16px; }
+        .form-card { background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(83,74,183,0.08); padding: 24px 20px; margin-bottom: 8px; }
+        .form-card h3 { font-size: 16px; color: #2D2A6E; margin-bottom: 6px; }
+        .form-card p { font-size: 13px; color: #888; margin-bottom: 16px; }
+        .form-card iframe { width: 100%; border: none; border-radius: 8px; height: 520px; }
+        footer { text-align: center; padding: 24px; font-size: 12px; color: #999; }
+        .badge { display: inline-block; background: #EEF0FF; color: #534AB7; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-bottom: 4px; }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Centro de Soporte Family Link</h1>
-    </header>
-    <main>
-        <section class="faq">
-            <h2>Preguntas Frecuentes</h2>
-        
-            <div class="faq-item">
-                <h3 class="faq-question">¿Cómo puedo descargar la app?</h3>
-                <p class="faq-answer">La aplicación está disponible para su descarga en la Play Store. Simplemente busca el nombre de nuestra app en la tienda y sigue las instrucciones para instalarla en tu dispositivo móvil.</p>
+<header>
+    <div class="header-icon">🏠</div>
+    <h1 id="header-title">Centro de Soporte</h1>
+    <p id="header-sub">Family Link · Todo lo que necesitas saber</p>
+    <div class="lang-selector">
+        <button class="lang-btn active" onclick="setLang('es')">🇪🇸 ES</button>
+        <button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
+        <button class="lang-btn" onclick="setLang('fr')">🇫🇷 FR</button>
+        <button class="lang-btn" onclick="setLang('pt')">🇵🇹 PT</button>
+        <button class="lang-btn" onclick="setLang('zh')">🇨🇳 ZH</button>
+        <button class="lang-btn" onclick="setLang('ar')">🇸🇦 AR</button>
+    </div>
+</header>
+
+<main id="main-content"></main>
+
+<footer id="footer-text">© 2026 Family Link · Todos los derechos reservados</footer>
+
+<script>
+const translations = {
+    es: {
+        headerTitle: "Centro de Soporte",
+        headerSub: "Family Link · Todo lo que necesitas saber",
+        faqTitle: "Preguntas frecuentes",
+        contactTitle: "¿Tienes otra pregunta?",
+        contactHead: "Contacta con nosotros",
+        contactSub: "Rellena el formulario y te responderemos lo antes posible.",
+        footer: "© 2026 Family Link · Todos los derechos reservados",
+        faqs: [
+            { q: "¿Cómo puedo descargar la app?", a: "La aplicación está disponible en Google Play Store. Busca <strong>Family Link</strong> e instálala en tu dispositivo Android." },
+            { q: "¿Es gratuita la app?", a: "La app es gratuita. Algunas funciones avanzadas como la <strong>ubicación en tiempo real</strong> y los <strong>gastos comunes</strong> requieren una suscripción Premium. El <strong>modo supermercado</strong> está disponible con un pago único de 0,99€." },
+            { q: "¿Cómo me registro?", a: "<img src='images/registro.jpg'>Completa todos los campos del formulario de registro. Necesitas un correo válido y una contraseña de al menos 6 caracteres. También deberás registrar el nombre de tu <strong>Entorno Familiar</strong> — si ya existe uno, pide el nombre exacto y la clave a un miembro de tu familia." },
+            { q: "¿El nombre del entorno familiar es único?", a: "Sí, el nombre del entorno familiar es único y no puede modificarse una vez registrado. Elígelo con cuidado." },
+            { q: "¿Qué es la contraseña del entorno familiar?", a: "<img src='images/pass.jpg'>Es una clave compartida entre todos los miembros del entorno. Si eres el primero en registrarte, la estableces tú y debes compartirla con el resto." },
+            { q: "¿Puedo restablecer la contraseña de una cuenta infantil?", a: "No es posible restablecer la contraseña infantil directamente. Al crear la cuenta, se genera automáticamente una nota en la cuenta del adulto encargado con las credenciales de acceso del menor." },
+            { q: "¿Cómo funciona el área infantil?", a: "Permite a los padres organizar tareas diarias de los niños y establecer recordatorios. Los niños acumulan puntos por cada tarea completada que pueden canjear por logros. Los padres pueden seguir el progreso desde <strong>Área infantil → Consultar tareas</strong>." },
+            { q: "¿Qué incluye Premium?", a: "<span class='badge'>PREMIUM</span><br>Con Premium desbloqueas:<ul><li><strong>Ubicación familiar</strong> en tiempo real</li><li><strong>Gastos comunes</strong> compartidos</li><li><strong>Modo supermercado</strong> con escáner</li></ul><br>Disponible en planes Individual y Familiar." },
+            { q: "¿Cómo funciona la ubicación familiar?", a: "Los menores comparten su ubicación automáticamente. Los adultos necesitan Premium activo para ver la ubicación desde <strong>Menú principal → Ubicación</strong>." },
+            { q: "¿Cómo añado un miembro menor?", a: "Ve a <strong>Área infantil → Gestionar área infantil</strong> y pulsa el botón para crear una cuenta infantil. Se generará una nota en tu cuenta con las credenciales del menor." },
+            { q: "¿Qué pasa si cancelo mi suscripción Premium?", a: "Perderás el acceso a la ubicación familiar y a los gastos comunes. Sin embargo, si compraste el modo supermercado como pago único, lo conservarás de por vida." },
+            { q: "¿Cómo funcionan los gastos comunes?", a: "Crea grupos de gastos, añade quién pagó y cómo se divide. La app calcula automáticamente las deudas netas y permite registrar abonos y saldar deudas individuales." },
+            { q: "¿Puedo cambiar de entorno familiar?", a: "No es posible cambiar de entorno directamente. Tendrías que eliminar tu cuenta y crear una nueva." },
+            { q: "¿Cómo funciona el plan familiar Premium?", a: "<span class='badge'>FAMILIAR</span><br>Todos los adultos del entorno disfrutan de Premium con un único pago:<ul><li><strong>Familiar S</strong> — hasta 3 adultos</li><li><strong>Familiar M</strong> — hasta 5 adultos</li><li><strong>Familiar L</strong> — 6 o más adultos</li></ul>" },
+            { q: "¿Es segura mi información?", a: "Sí. Toda la información se almacena en <strong>Firebase</strong> de Google con cifrado en tránsito y en reposo. Nunca vendemos ni compartimos tu información con terceros." },
+            { q: "¿Funciona sin conexión a internet?", a: "Family Link necesita conexión a internet para sincronizar los datos entre los miembros de la familia." },
+            { q: "¿Puedo usar la app en varios dispositivos?", a: "Sí, puedes iniciar sesión con la misma cuenta en varios dispositivos Android. Los datos se sincronizan en tiempo real." },
+            { q: "¿Cómo cancelo mi suscripción?", a: "Desde <strong>Google Play → tu perfil → Suscripciones → Family Link → Cancelar</strong>. Seguirás teniendo acceso hasta el final del período pagado." },
+            { q: "¿Cómo elimino mi cuenta?", a: "Ve a <strong>Ajustes → Eliminar cuenta</strong>, introduce tu contraseña y confirma. Se eliminarán permanentemente todos tus datos personales." },
+        ]
+    },
+    en: {
+        headerTitle: "Support Center",
+        headerSub: "Family Link · Everything you need to know",
+        faqTitle: "Frequently Asked Questions",
+        contactTitle: "Have another question?",
+        contactHead: "Contact us",
+        contactSub: "Fill out the form and we'll get back to you as soon as possible.",
+        footer: "© 2026 Family Link · All rights reserved",
+        faqs: [
+            { q: "How can I download the app?", a: "The app is available on the Google Play Store. Search for <strong>Family Link</strong> and install it on your Android device." },
+            { q: "Is the app free?", a: "The app is free. Some advanced features like <strong>real-time location</strong> and <strong>shared expenses</strong> require a Premium subscription. <strong>Supermarket mode</strong> is available as a one-time purchase of €0.99." },
+            { q: "How do I register?", a: "<img src='images/registro.jpg'>Fill in all fields in the registration form. You need a valid email and a password of at least 6 characters. You'll also need to register your <strong>Family Environment</strong> name — if one already exists, ask a family member for the exact name and key." },
+            { q: "Is the family environment name unique?", a: "Yes, the family environment name is unique and cannot be changed once registered. Choose it carefully." },
+            { q: "What is the family environment password?", a: "<img src='images/pass.jpg'>It's a shared key between all members. If you're the first to register, you set it and share it with the rest." },
+            { q: "Can I reset a child account password?", a: "You cannot reset a child account password directly. When the account is created, a note with the credentials is automatically generated in the adult's account." },
+            { q: "How does the kids area work?", a: "Parents can organize daily tasks for children and set reminders. Kids earn points for each completed task that can be exchanged for achievements. Parents can track progress from <strong>Kids Area → View tasks</strong>." },
+            { q: "What does Premium include?", a: "<span class='badge'>PREMIUM</span><br>With Premium you unlock:<ul><li><strong>Family location</strong> in real time</li><li><strong>Shared expenses</strong></li><li><strong>Supermarket mode</strong> with scanner</li></ul><br>Available in Individual and Family plans." },
+            { q: "How does family location work?", a: "Minors automatically share their location. Adults need an active Premium subscription to view locations from <strong>Main menu → Location</strong>." },
+            { q: "How do I add a child member?", a: "Go to <strong>Kids Area → Manage kids area</strong> and tap the button to create a child account. A note with the child's credentials will be generated in your account." },
+            { q: "What happens if I cancel Premium?", a: "You'll lose access to family location and shared expenses. However, if you purchased supermarket mode as a one-time payment, you'll keep it forever." },
+            { q: "How do shared expenses work?", a: "Create expense groups, add who paid and how it's divided. The app automatically calculates net debts and allows you to register payments and settle individual debts." },
+            { q: "Can I change my family environment?", a: "It's not possible to change environments directly. You would need to delete your account and create a new one." },
+            { q: "How does the Family Premium plan work?", a: "<span class='badge'>FAMILY</span><br>All adults in the environment enjoy Premium with a single payment:<ul><li><strong>Family S</strong> — up to 3 adults</li><li><strong>Family M</strong> — up to 5 adults</li><li><strong>Family L</strong> — 6 or more adults</li></ul>" },
+            { q: "Is my information secure?", a: "Yes. All data is stored in Google's <strong>Firebase</strong> with encryption in transit and at rest. We never sell or share your data with third parties." },
+            { q: "Does it work without internet?", a: "Family Link needs an internet connection to sync data between family members." },
+            { q: "Can I use the app on multiple devices?", a: "Yes, you can log in with the same account on multiple Android devices. Data syncs in real time." },
+            { q: "How do I cancel my subscription?", a: "From <strong>Google Play → your profile → Subscriptions → Family Link → Cancel</strong>. You'll keep access until the end of the paid period." },
+            { q: "How do I delete my account?", a: "Go to <strong>Settings → Delete account</strong>, enter your password and confirm. All your personal data will be permanently deleted." },
+        ]
+    },
+    fr: {
+        headerTitle: "Centre d'assistance",
+        headerSub: "Family Link · Tout ce que vous devez savoir",
+        faqTitle: "Questions fréquentes",
+        contactTitle: "Vous avez une autre question?",
+        contactHead: "Contactez-nous",
+        contactSub: "Remplissez le formulaire et nous vous répondrons dès que possible.",
+        footer: "© 2026 Family Link · Tous droits réservés",
+        faqs: [
+            { q: "Comment télécharger l'application?", a: "L'application est disponible sur Google Play Store. Recherchez <strong>Family Link</strong> et installez-la sur votre appareil Android." },
+            { q: "L'application est-elle gratuite?", a: "L'application est gratuite. Certaines fonctions avancées comme la <strong>localisation en temps réel</strong> et les <strong>dépenses communes</strong> nécessitent un abonnement Premium. Le <strong>mode supermarché</strong> est disponible en achat unique à 0,99€." },
+            { q: "Comment m'inscrire?", a: "<img src='images/registro.jpg'>Remplissez tous les champs du formulaire. Vous avez besoin d'un email valide et d'un mot de passe d'au moins 6 caractères. Vous devrez aussi enregistrer le nom de votre <strong>Environnement Familial</strong>." },
+            { q: "Le nom de l'environnement familial est-il unique?", a: "Oui, il est unique et ne peut pas être modifié une fois enregistré. Choisissez-le avec soin." },
+            { q: "Qu'est-ce que le mot de passe de l'environnement familial?", a: "<img src='images/pass.jpg'>C'est une clé partagée entre tous les membres. Si vous êtes le premier à vous inscrire, vous la définissez et la partagez avec les autres." },
+            { q: "Puis-je réinitialiser le mot de passe d'un compte enfant?", a: "Non. Lors de la création du compte enfant, une note avec les identifiants est automatiquement générée dans le compte de l'adulte responsable." },
+            { q: "Comment fonctionne l'espace enfants?", a: "Les parents peuvent organiser les tâches quotidiennes des enfants. Les enfants gagnent des points pour chaque tâche accomplie. Les parents peuvent suivre la progression depuis <strong>Espace enfants → Consulter les tâches</strong>." },
+            { q: "Que comprend Premium?", a: "<span class='badge'>PREMIUM</span><br>Avec Premium vous débloquez:<ul><li><strong>Localisation familiale</strong> en temps réel</li><li><strong>Dépenses communes</strong></li><li><strong>Mode supermarché</strong> avec scanner</li></ul>" },
+            { q: "Comment fonctionne la localisation familiale?", a: "Les mineurs partagent automatiquement leur localisation. Les adultes ont besoin de Premium actif pour voir les localisations depuis <strong>Menu principal → Localisation</strong>." },
+            { q: "Comment ajouter un membre mineur?", a: "Allez dans <strong>Espace enfants → Gérer l'espace enfants</strong> et appuyez sur le bouton pour créer un compte enfant." },
+            { q: "Que se passe-t-il si j'annule Premium?", a: "Vous perdrez l'accès à la localisation et aux dépenses communes. Le mode supermarché acheté en paiement unique reste acquis." },
+            { q: "Comment fonctionnent les dépenses communes?", a: "Créez des groupes de dépenses, ajoutez qui a payé et comment c'est divisé. L'application calcule automatiquement les dettes nettes." },
+            { q: "Puis-je changer d'environnement familial?", a: "Non, ce n'est pas possible directement. Vous devriez supprimer votre compte et en créer un nouveau." },
+            { q: "Comment fonctionne le plan familial Premium?", a: "<span class='badge'>FAMILLE</span><br>Tous les adultes profitent de Premium avec un seul paiement:<ul><li><strong>Famille S</strong> — jusqu'à 3 adultes</li><li><strong>Famille M</strong> — jusqu'à 5 adultes</li><li><strong>Famille L</strong> — 6 adultes ou plus</li></ul>" },
+            { q: "Mes informations sont-elles sécurisées?", a: "Oui. Toutes les données sont stockées dans <strong>Firebase</strong> de Google avec chiffrement. Nous ne vendons jamais vos données." },
+            { q: "Fonctionne-t-il sans internet?", a: "Family Link nécessite une connexion internet pour synchroniser les données." },
+            { q: "Puis-je utiliser l'app sur plusieurs appareils?", a: "Oui, vous pouvez vous connecter avec le même compte sur plusieurs appareils Android." },
+            { q: "Comment annuler mon abonnement?", a: "Depuis <strong>Google Play → votre profil → Abonnements → Family Link → Annuler</strong>." },
+            { q: "Comment supprimer mon compte?", a: "Allez dans <strong>Paramètres → Supprimer le compte</strong>, entrez votre mot de passe et confirmez." },
+        ]
+    },
+    pt: {
+        headerTitle: "Centro de Suporte",
+        headerSub: "Family Link · Tudo o que precisas saber",
+        faqTitle: "Perguntas Frequentes",
+        contactTitle: "Tens outra pergunta?",
+        contactHead: "Contacta-nos",
+        contactSub: "Preenche o formulário e responderemos o mais rápido possível.",
+        footer: "© 2026 Family Link · Todos os direitos reservados",
+        faqs: [
+            { q: "Como posso descarregar a app?", a: "A aplicação está disponível na Google Play Store. Procura <strong>Family Link</strong> e instala-a no teu dispositivo Android." },
+            { q: "A app é gratuita?", a: "A app é gratuita. Algumas funções avançadas como a <strong>localização em tempo real</strong> e as <strong>despesas comuns</strong> requerem uma subscrição Premium. O <strong>modo supermercado</strong> está disponível com um pagamento único de 0,99€." },
+            { q: "Como me registo?", a: "<img src='images/registro.jpg'>Preenche todos os campos do formulário de registo. Precisas de um email válido e uma palavra-passe de pelo menos 6 caracteres." },
+            { q: "O nome do ambiente familiar é único?", a: "Sim, é único e não pode ser alterado após o registo. Escolhe-o com cuidado." },
+            { q: "O que é a palavra-passe do ambiente familiar?", a: "<img src='images/pass.jpg'>É uma chave partilhada entre todos os membros. Se fores o primeiro a registar-te, defines-a e partilhas com os restantes." },
+            { q: "Posso redefinir a palavra-passe de uma conta infantil?", a: "Não é possível redefinir diretamente. Ao criar a conta, uma nota com as credenciais é gerada automaticamente na conta do adulto responsável." },
+            { q: "Como funciona a área infantil?", a: "Os pais podem organizar tarefas diárias das crianças. As crianças acumulam pontos por cada tarefa concluída. Os pais podem acompanhar o progresso em <strong>Área infantil → Consultar tarefas</strong>." },
+            { q: "O que inclui o Premium?", a: "<span class='badge'>PREMIUM</span><br>Com Premium desbloqueias:<ul><li><strong>Localização familiar</strong> em tempo real</li><li><strong>Despesas comuns</strong></li><li><strong>Modo supermercado</strong> com scanner</li></ul>" },
+            { q: "Como funciona a localização familiar?", a: "Os menores partilham a sua localização automaticamente. Os adultos precisam de Premium ativo para ver as localizações em <strong>Menu principal → Localização</strong>." },
+            { q: "Como adiciono um membro menor?", a: "Vai a <strong>Área infantil → Gerir área infantil</strong> e toca no botão para criar uma conta infantil." },
+            { q: "O que acontece se cancelar o Premium?", a: "Perderás o acesso à localização e às despesas comuns. O modo supermercado comprado como pagamento único fica para sempre." },
+            { q: "Como funcionam as despesas comuns?", a: "Cria grupos de despesas, adiciona quem pagou e como se divide. A app calcula automaticamente as dívidas líquidas." },
+            { q: "Posso mudar de ambiente familiar?", a: "Não é possível mudar diretamente. Teria de eliminar a conta e criar uma nova." },
+            { q: "Como funciona o plano familiar Premium?", a: "<span class='badge'>FAMILIAR</span><br>Todos os adultos do ambiente desfrutam de Premium com um único pagamento:<ul><li><strong>Familiar S</strong> — até 3 adultos</li><li><strong>Familiar M</strong> — até 5 adultos</li><li><strong>Familiar L</strong> — 6 ou mais adultos</li></ul>" },
+            { q: "A minha informação é segura?", a: "Sim. Todos os dados são armazenados no <strong>Firebase</strong> da Google com encriptação. Nunca vendemos os teus dados." },
+            { q: "Funciona sem internet?", a: "Family Link precisa de ligação à internet para sincronizar os dados." },
+            { q: "Posso usar a app em vários dispositivos?", a: "Sim, podes iniciar sessão com a mesma conta em vários dispositivos Android." },
+            { q: "Como cancelo a minha subscrição?", a: "Em <strong>Google Play → o teu perfil → Subscrições → Family Link → Cancelar</strong>." },
+            { q: "Como elimino a minha conta?", a: "Vai a <strong>Definições → Eliminar conta</strong>, introduz a tua palavra-passe e confirma." },
+        ]
+    },
+    zh: {
+        headerTitle: "支持中心",
+        headerSub: "Family Link · 您需要了解的一切",
+        faqTitle: "常见问题",
+        contactTitle: "还有其他问题？",
+        contactHead: "联系我们",
+        contactSub: "填写表格，我们会尽快回复您。",
+        footer: "© 2026 Family Link · 保留所有权利",
+        faqs: [
+            { q: "如何下载应用程序？", a: "该应用程序可在 Google Play 商店下载。搜索 <strong>Family Link</strong> 并安装到您的 Android 设备上。" },
+            { q: "应用程序免费吗？", a: "应用程序是免费的。<strong>实时位置</strong>和<strong>共同支出</strong>等高级功能需要 Premium 订阅。<strong>超市模式</strong>可一次性购买，价格为 0.99€。" },
+            { q: "如何注册？", a: "<img src='images/registro.jpg'>填写注册表格中的所有字段。您需要一个有效的电子邮件和至少6个字符的密码，以及您的<strong>家庭环境</strong>名称。" },
+            { q: "家庭环境名称是唯一的吗？", a: "是的，家庭环境名称是唯一的，注册后无法更改。请谨慎选择。" },
+            { q: "什么是家庭环境密码？", a: "<img src='images/pass.jpg'>这是所有成员共享的密钥。如果您是第一个注册的人，您需要设置它并与其他人共享。" },
+            { q: "我可以重置儿童账户密码吗？", a: "不能直接重置。创建账户时，会在成人账户中自动生成一个包含儿童账户凭据的笔记。" },
+            { q: "儿童区如何运作？", a: "家长可以为孩子组织日常任务。孩子每完成一项任务就可以积累积分。家长可以从<strong>儿童区 → 查看任务</strong>跟踪进度。" },
+            { q: "Premium 包含什么？", a: "<span class='badge'>PREMIUM</span><br>使用 Premium 解锁：<ul><li><strong>家庭位置</strong>实时追踪</li><li><strong>共同支出</strong>管理</li><li><strong>超市模式</strong>扫描仪</li></ul>" },
+            { q: "家庭位置如何运作？", a: "未成年人自动共享位置。成人需要激活 Premium 才能从<strong>主菜单 → 位置</strong>查看位置。" },
+            { q: "如何添加未成年成员？", a: "前往<strong>儿童区 → 管理儿童区</strong>，点击创建儿童账户的按钮。" },
+            { q: "取消 Premium 会怎样？", a: "您将失去对家庭位置和共同支出的访问权限。但如果您以一次性付款购买了超市模式，将永久保留。" },
+            { q: "共同支出如何运作？", a: "创建支出群组，添加谁付款以及如何分摊。应用程序自动计算净债务。" },
+            { q: "我可以更换家庭环境吗？", a: "不能直接更换。您需要删除账户并重新创建一个。" },
+            { q: "家庭 Premium 计划如何运作？", a: "<span class='badge'>家庭</span><br>环境中的所有成人只需一次付款即可享受完整 Premium：<ul><li><strong>家庭 S</strong> — 最多3名成人</li><li><strong>家庭 M</strong> — 最多5名成人</li><li><strong>家庭 L</strong> — 6名或更多成人</li></ul>" },
+            { q: "我的信息安全吗？", a: "是的。所有数据都存储在 Google 的 <strong>Firebase</strong> 中，具有传输和静止加密。我们从不出售您的数据。" },
+            { q: "没有网络可以使用吗？", a: "Family Link 需要互联网连接才能在家庭成员之间同步数据。" },
+            { q: "我可以在多个设备上使用该应用程序吗？", a: "是的，您可以在多个 Android 设备上使用同一账户登录。" },
+            { q: "如何取消订阅？", a: "从 <strong>Google Play → 您的个人资料 → 订阅 → Family Link → 取消</strong>。" },
+            { q: "如何删除我的账户？", a: "前往<strong>设置 → 删除账户</strong>，输入密码并确认。" },
+        ]
+    },
+    ar: {
+        headerTitle: "مركز الدعم",
+        headerSub: "Family Link · كل ما تحتاج معرفته",
+        faqTitle: "الأسئلة الشائعة",
+        contactTitle: "هل لديك سؤال آخر؟",
+        contactHead: "تواصل معنا",
+        contactSub: "املأ النموذج وسنرد عليك في أقرب وقت ممكن.",
+        footer: "© 2026 Family Link · جميع الحقوق محفوظة",
+        faqs: [
+            { q: "كيف يمكنني تنزيل التطبيق؟", a: "التطبيق متاح على متجر Google Play. ابحث عن <strong>Family Link</strong> وقم بتثبيته على جهاز Android الخاص بك." },
+            { q: "هل التطبيق مجاني؟", a: "التطبيق مجاني. بعض الميزات المتقدمة مثل <strong>الموقع الفوري</strong> و<strong>المصاريف المشتركة</strong> تتطلب اشتراك Premium. <strong>وضع السوبرماركت</strong> متاح بدفعة واحدة بقيمة 0.99€." },
+            { q: "كيف أسجل؟", a: "<img src='images/registro.jpg'>أكمل جميع حقول نموذج التسجيل. تحتاج إلى بريد إلكتروني صالح وكلمة مرور من 6 أحرف على الأقل، بالإضافة إلى اسم <strong>بيئتك العائلية</strong>." },
+            { q: "هل اسم البيئة العائلية فريد؟", a: "نعم، اسم البيئة العائلية فريد ولا يمكن تغييره بعد التسجيل. اختره بعناية." },
+            { q: "ما هي كلمة مرور البيئة العائلية؟", a: "<img src='images/pass.jpg'>إنها مفتاح مشترك بين جميع الأعضاء. إذا كنت أول من يسجل، فأنت تحددها وتشاركها مع الآخرين." },
+            { q: "هل يمكنني إعادة تعيين كلمة مرور حساب الأطفال؟", a: "لا يمكن إعادة التعيين مباشرة. عند إنشاء الحساب، يتم إنشاء ملاحظة تلقائياً في حساب البالغ المسؤول مع بيانات اعتماد الطفل." },
+            { q: "كيف تعمل منطقة الأطفال؟", a: "يمكن للآباء تنظيم المهام اليومية للأطفال. يجمع الأطفال نقاطاً مقابل كل مهمة مكتملة. يمكن للآباء متابعة التقدم من <strong>منطقة الأطفال → عرض المهام</strong>." },
+            { q: "ماذا يتضمن Premium؟", a: "<span class='badge'>PREMIUM</span><br>مع Premium تفتح:<ul><li><strong>الموقع العائلي</strong> في الوقت الفعلي</li><li><strong>المصاريف المشتركة</strong></li><li><strong>وضع السوبرماركت</strong> مع الماسح</li></ul>" },
+            { q: "كيف يعمل الموقع العائلي؟", a: "يشارك القاصرون موقعهم تلقائياً. يحتاج البالغون إلى Premium نشط لرؤية المواقع من <strong>القائمة الرئيسية → الموقع</strong>." },
+            { q: "كيف أضيف عضواً قاصراً؟", a: "اذهب إلى <strong>منطقة الأطفال → إدارة منطقة الأطفال</strong> واضغط على زر إنشاء حساب للأطفال." },
+            { q: "ماذا يحدث إذا ألغيت Premium؟", a: "ستفقد الوصول إلى الموقع والمصاريف المشتركة. لكن إذا اشتريت وضع السوبرماركت كدفعة واحدة، فستحتفظ به إلى الأبد." },
+            { q: "كيف تعمل المصاريف المشتركة؟", a: "أنشئ مجموعات مصاريف، أضف من دفع وكيف يتم التقسيم. يحسب التطبيق تلقائياً الديون الصافية." },
+            { q: "هل يمكنني تغيير البيئة العائلية؟", a: "لا يمكن التغيير مباشرة. ستحتاج إلى حذف حسابك وإنشاء حساب جديد." },
+            { q: "كيف يعمل خطة Premium العائلية؟", a: "<span class='badge'>عائلي</span><br>جميع البالغين في البيئة يستمتعون بـ Premium بدفعة واحدة:<ul><li><strong>عائلي S</strong> — حتى 3 بالغين</li><li><strong>عائلي M</strong> — حتى 5 بالغين</li><li><strong>عائلي L</strong> — 6 بالغين أو أكثر</li></ul>" },
+            { q: "هل معلوماتي آمنة؟", a: "نعم. يتم تخزين جميع البيانات في <strong>Firebase</strong> من Google مع تشفير. لا نبيع بياناتك أبداً." },
+            { q: "هل يعمل بدون إنترنت؟", a: "يحتاج Family Link إلى اتصال بالإنترنت لمزامنة البيانات بين أفراد العائلة." },
+            { q: "هل يمكنني استخدام التطبيق على أجهزة متعددة؟", a: "نعم، يمكنك تسجيل الدخول بنفس الحساب على أجهزة Android متعددة." },
+            { q: "كيف ألغي اشتراكي؟", a: "من <strong>Google Play → ملفك الشخصي → الاشتراكات → Family Link → إلغاء</strong>." },
+            { q: "كيف أحذف حسابي؟", a: "اذهب إلى <strong>الإعدادات → حذف الحساب</strong>، أدخل كلمة مرورك وأكد." },
+        ]
+    }
+};
+
+function setLang(lang) {
+    const t = translations[lang];
+    document.getElementById('header-title').textContent = t.headerTitle;
+    document.getElementById('header-sub').textContent = t.headerSub;
+    document.getElementById('footer-text').textContent = t.footer;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`[onclick="setLang('${lang}')"]`).classList.add('active');
+
+    const main = document.getElementById('main-content');
+    main.innerHTML = `
+        <div class="section-title">${t.faqTitle}</div>
+        ${t.faqs.map(f => `
+        <div class="faq-card">
+            <div class="faq-question">
+                ${f.q}
+                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
-        
-            <div class="faq-item">
-                <h3 class="faq-question">¿Es gratuita la app?</h3>
-                <p class="faq-answer">Sí, la aplicación es completamente gratuita. Sin embargo, puede que existan ciertas funcionalidades avanzadas que requieran un pago adicional o suscripción.</p>
-            </div>
-        
-            <div class="faq-item">
-                <h3 class="faq-question">¿Cómo debo registrarme?</h3>
-                <p class="faq-answer">
-                    <img src="images/registro.jpg" width="300">
-                    <br>
-                    Para registrarte, debes completar todos los campos solicitados en el formulario de registro. Es esencial asegurarse de que la dirección de correo electrónico proporcionada sea válida y que las contraseñas coincidan, con un mínimo de seis caracteres. Además, deberás registrar el nombre del "Entorno Familiar", que identificará a tu familia dentro de la plataforma. Si este entorno ya existe, asegúrate de obtener el nombre exacto y la clave de acceso de uno de sus miembros para unirte correctamente.
-                </p>
-            </div>
-        
-            <div class="faq-item">
-                <h3 class="faq-question">¿El nombre del entorno familiar es único?</h3>
-                <p class="faq-answer">Sí, el nombre del entorno familiar debe ser único y no podrá ser modificado una vez que se haya registrado. Asegúrate de elegirlo cuidadosamente.</p>
-            </div>
-        
-            <div class="faq-item">
-                <h3 class="faq-question">¿Qué es la contraseña del entorno familiar?</h3>
-                <p class="faq-answer">
-                    <img src="images/pass.jpg" width="300">
-                    <br>
-                    La contraseña del entorno familiar es una clave que todos los miembros de ese entorno deben conocer. Si te registras en un entorno ya existente, será necesario que proporciones esta clave para unirte. Si eres el primer miembro en registrarse, tendrás que establecer esta contraseña, la cual deberás compartir con los demás miembros para que puedan acceder al entorno familiar.
-                </p>
-            </div>
-        
-            <div class="faq-item">
-                <h3 class="faq-question">¿Puedo restablecer la contraseña de una cuenta infantil si la olvido?</h3>
-                <p class="faq-answer">No es posible restablecer la contraseña de una cuenta infantil. No obstante, al crear una cuenta infantil, se genera automáticamente una nota en la cuenta del adulto encargado, que incluye la contraseña de la cuenta infantil. Esta contraseña estará disponible para su consulta dentro de la cuenta del adulto.</p>
-            </div>
-            <div class="faq-item">
-                <h3 class="faq-question">¿Cómo funciona el área infantil y la gestión de tareas para los más pequeños?</h3>
-                <p class="faq-answer">
-                    El área infantil permite a los padres organizar y gestionar las tareas diarias de los más pequeños de la familia. A través de esta función, los adultos pueden crear listas de tareas personalizadas, asignar responsabilidades y establecer recordatorios para que los niños completen sus obligaciones de manera organizada.
-                    <br><br>
-                    Además, el sistema incorpora un mecanismo de puntos e incentivos que premia a los niños por cada tarea completada. Estos puntos pueden acumularse y canjearse por logros y recompensas, fomentando la motivación y el desarrollo de una ética de trabajo positiva desde una edad temprana.
-                    <br><br>
-                    Los padres pueden seguir el progreso de sus hijos a través de la app, (Dentro de área infantil, consultar tareas) lo que les permite supervisar el cumplimiento de las tareas de una manera positiva y efectiva.
-                </p>
-            </div>
-            <div class="faq-item">
-                <h3 class="faq-question">¿Cómo puedo eliminar mi cuenta y los datos asociados?</h3>
-                <p class="faq-answer">Para eliminar tu cuenta y todos los datos asociados a ella, abre la app <strong>Family Link</strong> en tu dispositivo móvil, accede a la sección <strong>Ajustes</strong> en el menú principal, desplázate hacia abajo y selecciona la opción <strong>Eliminar cuenta</strong>. Luego, introduce la contraseña de tu cuenta para confirmar. Una vez que elimines tu cuenta, se borrarán de manera permanente todos tus datos personales, incluyendo tu nombre, correo electrónico, y cualquier dato de uso que hayas generado en la app. Ten en cuenta que los datos requeridos por obligaciones legales podrían ser retenidos por un período limitado antes de ser eliminados por completo.</p>
-            </div>
-            
-        </section>
-        <section class="submit-question">
-    
-            <!-- Incrustar Google Form usando un iframe -->
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd_H3ArxDQkkCSdhRPyDRU8dgfE5uEbh4rc0TwUMD7yg-D_CQ/viewform?embedded=true" width="640" height="510" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
-        </section>
-    </main>
-    <footer>
-        <p>© 2024 Family Link - Todos los derechos reservados</p>
-    </footer>
-    <script src="script.js"></script>
+            <div class="faq-answer">${f.a}</div>
+        </div>`).join('')}
+        <div class="section-title">${t.contactTitle}</div>
+        <div class="form-card">
+            <h3>${t.contactHead}</h3>
+            <p>${t.contactSub}</p>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd_H3ArxDQkkCSdhRPyDRU8dgfE5uEbh4rc0TwUMD7yg-D_CQ/viewform?embedded=true" title="Formulario">Cargando…</iframe>
+        </div>
+    `;
+
+    // RTL para árabe
+    document.body.style.direction = lang === 'ar' ? 'rtl' : 'ltr';
+
+    // Eventos acordeón
+    document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', () => {
+            const answer = q.nextElementSibling;
+            const isOpen = answer.style.display === 'block';
+            document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
+            document.querySelectorAll('.faq-question').forEach(q2 => q2.classList.remove('open'));
+            if (!isOpen) { answer.style.display = 'block'; q.classList.add('open'); }
+        });
+    });
+
+    localStorage.setItem('fl_lang', lang);
+}
+
+// Detectar idioma guardado o del navegador
+const saved = localStorage.getItem('fl_lang');
+const browserLang = navigator.language.substring(0, 2);
+const defaultLang = saved || (['es','en','fr','pt','zh','ar'].includes(browserLang) ? browserLang : 'es');
+setLang(defaultLang);
+</script>
 </body>
 </html>
